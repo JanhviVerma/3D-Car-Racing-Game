@@ -7,23 +7,18 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="game-container">
-        <h1>3D Car Racing Game</h1>
-        <div id="game"></div>
-        <div class="controls">
-            <label for="car-category">Choose Car Category:</label>
+    <div id="game-container">
+        <div id="ui">
+            <h1>3D Car Racing Game</h1>
+            <label for="car-category">Car Category:</label>
             <select id="car-category">
-                <option value="sports">Sports Car</option>
-                <option value="suv">SUV</option>
-                <option value="truck">Truck</option>
-                <option value="luxury">Luxury Car</option>
-                <option value="convertible">Convertible</option>
+                <option value="sports">Sports</option>
+                <option value="classic">Classic</option>
+                <option value="muscle">Muscle</option>
             </select>
-
-            <label for="car-color">Choose Car Color:</label>
+            <label for="car-color">Car Color:</label>
             <input type="color" id="car-color" value="#ff0000">
-
-            <label for="car-pattern">Choose Car Pattern:</label>
+            <label for="car-pattern">Car Pattern:</label>
             <select id="car-pattern">
                 <option value="stripes">Stripes</option>
                 <option value="polka-dots">Polka Dots</option>
@@ -31,8 +26,7 @@
                 <option value="camouflage">Camouflage</option>
                 <option value="checkered">Checkered</option>
             </select>
-
-            <label for="car-decals">Choose Car Decals:</label>
+            <label for="car-decals">Car Decals:</label>
             <select id="car-decals">
                 <option value="none">None</option>
                 <option value="flames">Flames</option>
@@ -40,8 +34,7 @@
                 <option value="checkered">Checkered</option>
                 <option value="stripes">Stripes</option>
             </select>
-
-            <label for="car-rims">Choose Car Rims:</label>
+            <label for="car-rims">Car Rims:</label>
             <select id="car-rims">
                 <option value="silver">Silver</option>
                 <option value="black">Black</option>
@@ -49,18 +42,13 @@
                 <option value="chrome">Chrome</option>
                 <option value="custom">Custom</option>
             </select>
-
-            <label for="track-choice">Choose Track:</label>
+            <label for="track-choice">Track:</label>
             <select id="track-choice">
-                <option value="desert">Desert Track</option>
-                <option value="forest">Forest Track</option>
-                <option value="city">City Track</option>
-                <option value="mountain">Mountain Track</option>
-                <option value="night">Night Track</option>
-                <option value="snow">Snow Track</option>
-                <option value="raceway">Raceway</option>
+                <option value="city">City</option>
+                <option value="desert">Desert</option>
+                <option value="forest">Forest</option>
+                <option value="snow">Snow</option>
             </select>
-
             <label for="weather-choice">Weather:</label>
             <select id="weather-choice">
                 <option value="sunny">Sunny</option>
@@ -69,31 +57,22 @@
                 <option value="snowy">Snowy</option>
                 <option value="stormy">Stormy</option>
             </select>
-
-            <label for="lap-count">Number of Laps:</label>
-            <input type="number" id="lap-count" value="3" min="1" max="10">
-
-            <label for="ai-opponents">Number of AI Opponents:</label>
-            <input type="number" id="ai-opponents" value="1" min="0" max="5">
-
-            <label for="player-count">Number of Players:</label>
-            <input type="number" id="player-count" value="1" min="1" max="4">
-
+            <label for="lap-count">Lap Count:</label>
+            <input type="number" id="lap-count" min="1" value="3">
+            <label for="ai-opponents">AI Opponents:</label>
+            <input type="number" id="ai-opponents" min="0" value="3">
+            <label for="player-count">Player Count:</label>
+            <input type="number" id="player-count" min="1" value="1">
             <button id="start-button">Start Race</button>
             <button id="reset-button">Reset Game</button>
+            <div id="lap-display">Lap: 1</div>
+            <div id="timer-display">Lap Time: 00:00</div>
+            <div id="power-up-display">Power-Up: None</div>
+            <div id="car-stats">Car Stats: Speed: 1.0</div>
+            <ul id="leaderboard-list"></ul>
         </div>
-        <div id="lap-display">Lap: 1</div>
-        <div id="timer-display">Lap Time: 00:00</div>
-        <div id="power-up-display">Power-Up: None</div>
-        <div id="car-stats">Car Stats: Speed: 1.0</div>
-        <div id="leaderboard">
-            <h2>Leaderboard</h2>
-            <ul id="leaderboard-list">
-                <!-- Leaderboard entries will be dynamically inserted here -->
-            </ul>
-        </div>
+        <div id="game-canvas"></div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
