@@ -5,22 +5,32 @@ let renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById('game').appendChild(renderer.domElement);
 
-// Track setup
+// Enhanced Track with Texture
+let textureLoader = new THREE.TextureLoader();
+let trackTexture = textureLoader.load('track-texture.jpg');
+let trackMaterial = new THREE.MeshBasicMaterial({ map: trackTexture });
 let trackGeometry = new THREE.BoxGeometry(10, 1, 100);
-let trackMaterial = new THREE.MeshBasicMaterial({ color: 0x444444 });
 let track = new THREE.Mesh(trackGeometry, trackMaterial);
 scene.add(track);
 
-// Car setup
-let carGeometry = new THREE.BoxGeometry(1, 0.5, 2);
-let carMaterial1 = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-let carMaterial2 = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+// Enhanced Car Models
+let carGeometry = new THREE.BoxGeometry(1.2, 0.6, 2.5);
+let carMaterial1 = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+let carMaterial2 = new THREE.MeshStandardMaterial({ color: 0x0000ff });
 let car1 = new THREE.Mesh(carGeometry, carMaterial1);
 let car2 = new THREE.Mesh(carGeometry, carMaterial2);
-car1.position.set(-2, 0.5, 0);
-car2.position.set(2, 0.5, 0);
+car1.position.set(-2, 0.6, 0);
+car2.position.set(2, 0.6, 0);
 scene.add(car1);
 scene.add(car2);
+
+// Added lighting for better 3D effect
+let ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+scene.add(ambientLight);
+
+let directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+directionalLight.position.set(0, 50, 50).normalize();
+scene.add(directionalLight);
 
 // Camera position
 camera.position.z = 50;
