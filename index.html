@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Car Racing Game</title>
+    <title>3D Car Racing Game - v11</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="game-container">
-        <canvas id="game-canvas"></canvas>
+        <div id="game-canvas"></div>
         <div id="ui-panel">
             <h1>3D Car Racing Game</h1>
             <div id="settings">
@@ -17,47 +17,63 @@
                     <option value="sports">Sports</option>
                     <option value="classic">Classic</option>
                     <option value="muscle">Muscle</option>
+                    <option value="futuristic">Futuristic</option>
                 </select>
+
                 <label for="car-color">Car Color:</label>
                 <input type="color" id="car-color" value="#FF0000">
+
                 <label for="car-pattern">Car Pattern:</label>
                 <select id="car-pattern">
                     <option value="solid">Solid</option>
                     <option value="stripes">Stripes</option>
                     <option value="dots">Dots</option>
+                    <option value="camo">Camo</option>
                 </select>
+
                 <label for="car-decals">Car Decals:</label>
                 <select id="car-decals">
                     <option value="none">None</option>
                     <option value="flame">Flame</option>
                     <option value="skull">Skull</option>
+                    <option value="lightning">Lightning</option>
                 </select>
+
                 <label for="car-rims">Car Rims:</label>
                 <select id="car-rims">
                     <option value="silver">Silver</option>
                     <option value="gold">Gold</option>
                     <option value="black">Black</option>
+                    <option value="neon">Neon</option>
                 </select>
+
                 <label for="track-choice">Track:</label>
                 <select id="track-choice">
                     <option value="city">City</option>
                     <option value="desert">Desert</option>
                     <option value="forest">Forest</option>
                     <option value="snow">Snow</option>
+                    <option value="space">Space</option>
                 </select>
+
                 <label for="weather-choice">Weather:</label>
                 <select id="weather-choice">
                     <option value="sunny">Sunny</option>
                     <option value="rainy">Rainy</option>
                     <option value="foggy">Foggy</option>
                     <option value="stormy">Stormy</option>
+                    <option value="aurora">Aurora</option>
                 </select>
+
                 <label for="player-count">Players:</label>
                 <input type="number" id="player-count" min="1" max="10" value="1">
+
                 <label for="ai-opponents">AI Opponents:</label>
                 <input type="number" id="ai-opponents" min="0" max="10" value="3">
+
                 <label for="lap-count">Laps:</label>
                 <input type="number" id="lap-count" min="1" max="10" value="3">
+
                 <button id="start-button">Start Race</button>
                 <button id="reset-button">Reset Game</button>
             </div>
@@ -66,6 +82,7 @@
                 <div id="timer-display">Lap Time: 00:00</div>
                 <div id="power-up-display">Power-Up: None</div>
                 <div id="car-stats">Car Stats: Speed: 1.0</div>
+                <div id="fps-counter">FPS: 60</div>
             </div>
             <div id="leaderboard">
                 <h2>Leaderboard</h2>
@@ -74,6 +91,7 @@
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
