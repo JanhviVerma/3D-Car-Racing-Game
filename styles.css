@@ -40,7 +40,7 @@ body {
     margin: 5px 0;
 }
 
-#car-category, #car-color, #car-pattern, #track-choice, #weather-choice, #lap-count {
+#car-category, #car-color, #car-pattern, #track-choice, #weather-choice, #lap-count, #ai-opponents {
     padding: 5px;
     font-size: 16px;
 }

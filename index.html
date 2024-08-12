@@ -16,6 +16,8 @@
                 <option value="sports">Sports Car</option>
                 <option value="suv">SUV</option>
                 <option value="truck">Truck</option>
+                <option value="luxury">Luxury Car</option>
+                <option value="convertible">Convertible</option>
             </select>
 
             <label for="car-color">Choose Car Color:</label>
@@ -26,6 +28,8 @@
                 <option value="stripes">Stripes</option>
                 <option value="polka-dots">Polka Dots</option>
                 <option value="solid">Solid</option>
+                <option value="camouflage">Camouflage</option>
+                <option value="checkered">Checkered</option>
             </select>
 
             <label for="track-choice">Choose Track:</label>
@@ -33,6 +37,8 @@
                 <option value="desert">Desert Track</option>
                 <option value="forest">Forest Track</option>
                 <option value="city">City Track</option>
+                <option value="mountain">Mountain Track</option>
+                <option value="night">Night Track</option>
             </select>
 
             <label for="weather-choice">Weather:</label>
@@ -41,10 +47,15 @@
                 <option value="rainy">Rainy</option>
                 <option value="foggy">Foggy</option>
                 <option value="snowy">Snowy</option>
+                <option value="stormy">Stormy</option>
             </select>
 
             <label for="lap-count">Number of Laps:</label>
             <input type="number" id="lap-count" value="3" min="1" max="10">
+
+            <label for="ai-opponents">Number of AI Opponents:</label>
+            <input type="number" id="ai-opponents" value="1" min="0" max="5">
+
             <button id="start-button">Start Race</button>
             <button id="reset-button">Reset Game</button>
         </div>

@@ -10,7 +10,9 @@ let textureLoader = new THREE.TextureLoader();
 let trackTextures = {
     desert: textureLoader.load('desert-track.jpg'),
     forest: textureLoader.load('forest-track.jpg'),
-    city: textureLoader.load('city-track.jpg')
+    city: textureLoader.load('city-track.jpg'),
+    mountain: textureLoader.load('mountain-track.jpg'),
+    night: textureLoader.load('night-track.jpg')
 };
 
 let trackMaterial = new THREE.MeshBasicMaterial();
@@ -18,7 +20,7 @@ let trackGeometry = new THREE.BoxGeometry(10, 1, 100);
 let track = new THREE.Mesh(trackGeometry, trackMaterial);
 scene.add(track);
 
-// Enhanced Car Models with Patterns
+// Enhanced Car Models with Patterns and Customization
 let carGeometry = new THREE.BoxGeometry(1.2, 0.6, 2.5);
 let carMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
 let car1 = new THREE.Mesh(carGeometry, carMaterial);
@@ -42,7 +44,9 @@ camera.position.z = 50;
 let carSpeeds = {
     sports: { car1: 0.15, car2: 0.14 },
     suv: { car1: 0.1, car2: 0.09 },
-    truck: { car1: 0.08, car2: 0.07 }
+    truck: { car1: 0.08, car2: 0.07 },
+    luxury: { car1: 0.12, car2: 0.11 },
+    convertible: { car1: 0.14, car2: 0.13 }
 };
 
 let selectedCategory = 'sports';
@@ -51,6 +55,7 @@ let selectedWeather = 'sunny';
 let lapCount = 3;
 let carColor = '#ff0000';
 let carPattern = 'solid';
+let aiOpponents = 1;
 
 document.getElementById('car-category').addEventListener('change', function() {
     selectedCategory = this.value;
@@ -69,7 +74,7 @@ document.getElementById('car-pattern').addEventListener('change', function() {
 
 document.getElementById('track-choice').addEventListener('change', function() {
     selectedTrack = this.value;
-    track.material.map = trackTextures[selectedTrack];
+    track.material = new THREE.MeshBasicMaterial({ map: trackTextures[selectedTrack] });
 });
 
 document.getElementById('weather-choice').addEventListener('change', function() {
@@ -77,19 +82,47 @@ document.getElementById('weather-choice').addEventListener('change', function() 
     applyWeatherEffects();
 });
 
-document.getElementById('lap-count').addEventListener('change', function() {
+document.getElementById('lap-count').addEventListener('input', function() {
     lapCount = parseInt(this.value, 10);
+});
+
+document.getElementById('ai-opponents').addEventListener('input', function() {
+    aiOpponents = parseInt(this.value, 10);
 });
 
 document.getElementById('start-button').addEventListener('click', startRace);
 document.getElementById('reset-button').addEventListener('click', resetGame);
 
+let leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
+let startTime;
 let currentLap = 1;
 let isBoostActive = false;
-let startTime, lapTimer;
-let leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
 
-// Adding Obstacles and Power-Ups
+// Create AI Opponents
+let aiCars = [];
+for (let i = 0; i < aiOpponents; i++) {
+    let aiCar = new THREE.Mesh(carGeometry, carMaterial);
+    aiCar.position.set(Math.random() * 10 - 5, 0.6, -Math.random() * 100);
+    scene.add(aiCar);
+    aiCars.push(aiCar);
+}
+
+// Dynamic Car Physics
+function updateCarPhysics(car, speed) {
+    car.position.z += speed;
+}
+
+// Dynamic AI Opponents
+function updateAIOpponents() {
+    aiCars.forEach(aiCar => {
+        aiCar.position.z += Math.random() * carSpeeds[selectedCategory].car2;
+        if (aiCar.position.z > 100) {
+            aiCar.position.z = -100;
+        }
+    });
+}
+
+// Power-Ups
 let obstacles = [];
 for (let i = 0; i < 5; i++) {
     let obstacleGeometry = new THREE.BoxGeometry(1, 1, 1);
@@ -106,8 +139,8 @@ let powerUp = new THREE.Mesh(powerUpGeometry, powerUpMaterial);
 powerUp.position.set(Math.random() * 10 - 5, 0.5, -Math.random() * 100);
 scene.add(powerUp);
 
+// Apply Car Pattern
 function applyCarPattern() {
-    // Example patterns, you can extend this to include more complex patterns
     switch (carPattern) {
         case 'stripes':
             car1.material.map = textureLoader.load('stripes.jpg');
@@ -121,27 +154,39 @@ function applyCarPattern() {
             car1.material.map = null;
             car2.material.map = null;
             break;
+        case 'camouflage':
+            car1.material.map = textureLoader.load('camouflage.jpg');
+            car2.material.map = textureLoader.load('camouflage.jpg');
+            break;
+        case 'checkered':
+            car1.material.map = textureLoader.load('checkered.jpg');
+            car2.material.map = textureLoader.load('checkered.jpg');
+            break;
     }
 }
 
-// Apply weather effects
+// Apply Weather Effects
 function applyWeatherEffects() {
     switch (selectedWeather) {
         case 'sunny':
-            renderer.setClearColor(0x87ceeb); // Light blue for sunny
+            renderer.setClearColor(0x87ceeb);
             scene.fog = null;
             break;
         case 'rainy':
-            renderer.setClearColor(0x606060); // Gray for rainy
+            renderer.setClearColor(0x606060);
             scene.fog = null;
             break;
         case 'foggy':
-            renderer.setClearColor(0x9e9e9e); // Foggy gray
+            renderer.setClearColor(0x9e9e9e);
             scene.fog = new THREE.FogExp2(0x9e9e9e, 0.02);
             break;
         case 'snowy':
-            renderer.setClearColor(0xffffff); // White for snowy
+            renderer.setClearColor(0xffffff);
             scene.fog = null;
+            break;
+        case 'stormy':
+            renderer.setClearColor(0x333333);
+            scene.fog = new THREE.FogExp2(0x333333, 0.05);
             break;
     }
 }
@@ -169,6 +214,9 @@ function startRace() {
         car1.position.z = -car1Position;
         car2.position.z = -car2Position;
 
+        // AI Cars Movement
+        updateAIOpponents();
+
         // Obstacle Collision Detection
         obstacles.forEach(obstacle => {
             if (Math.abs(car1.position.x - obstacle.position.x) < 1 && Math.abs(car1.position.z - obstacle.position.z) < 1) {
@@ -182,7 +230,7 @@ function startRace() {
         // Power-Up Collection
         if (Math.abs(car1.position.x - powerUp.position.x) < 1 && Math.abs(car1.position.z - powerUp.position.z) < 1) {
             speeds.car1 *= 1.5;
-            powerUp.position.z = -Math.random() * 100; // Move power-up to a new position
+            powerUp.position.z = -Math.random() * 100;
             document.getElementById('power-up-display').textContent = 'Power-Up: Speed Boost';
         }
 
@@ -213,12 +261,13 @@ function startRace() {
 function resetGame() {
     car1.position.set(-2, 0.6, 0);
     car2.position.set(2, 0.6, 0);
-    car1.material.color.set('#ff0000');
-    car2.material.color.set('#ff0000');
+    car1.material.color.set(carColor);
+    car2.material.color.set(carColor);
     currentLap = 1;
     document.getElementById('lap-display').textContent = 'Lap: ' + currentLap;
     document.getElementById('timer-display').textContent = 'Lap Time: 00:00';
     document.getElementById('power-up-display').textContent = 'Power-Up: None';
+    document.getElementById('car-stats').textContent = `Car Stats: Speed: 1.0`;
 }
 
 // Update Leaderboard
