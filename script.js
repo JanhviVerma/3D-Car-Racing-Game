@@ -93,14 +93,12 @@ function createTrack() {
     track.rotation.x = -Math.PI / 2;
     scene.add(track);
 
-    // Add track details (buildings, trees, etc.)
     addTrackDetails();
 }
 
 // Add track details
 function addTrackDetails() {
-    // Add buildings, trees, or other objects based on the selected track
-    // This is a placeholder for more complex track creation logic
+    // Placeholder for more complex track creation logic
 }
 
 // Create skybox
@@ -136,7 +134,6 @@ function createCars() {
         aiCars.push(aiCar);
     }
 
-    // Add car details (wheels, spoilers, etc.)
     addCarDetails();
 }
 
@@ -149,7 +146,7 @@ function addCarDetails() {
         
         for (let i = 0; i < 4; i++) {
             const wheel = new THREE.Mesh(wheelGeometry, wheelMaterial);
-          wheel.rotation.z = Math.PI / 2;
+            wheel.rotation.z = Math.PI / 2;
             wheel.position.set(
                 (i % 2 === 0 ? 0.6 : -0.6),
                 -0.3,
@@ -251,10 +248,7 @@ function update() {
     // Update skybox
     skybox.rotation.y += 0.0001;
 
-    // Check for collisions
     checkCollisions();
-
-    // Update UI
     updateUI();
 }
 
@@ -263,9 +257,7 @@ function checkCollisions() {
     cars.forEach(car => {
         powerUps.forEach((powerUp, index) => {
             if (car.position.distanceTo(powerUp.position) < 1) {
-                // Apply power-up effect
                 applyPowerUp(car);
-                // Remove power-up
                 scene.remove(powerUp);
                 powerUps.splice(index, 1);
             }
@@ -323,7 +315,25 @@ function animate() {
 function startGame() {
     startTime = Date.now();
     currentLap = 1;
-    animate();
+    
+    // Hide UI panel
+    document.getElementById('ui-panel').classList.add('hidden');
+    
+    // Show countdown
+    const countdownElement = document.getElementById('countdown');
+    countdownElement.style.display = 'block';
+    
+    let count = 3;
+    const countdownInterval = setInterval(() => {
+        countdownElement.textContent = count;
+        count--;
+        
+        if (count < 0) {
+            clearInterval(countdownInterval);
+            countdownElement.style.display = 'none';
+            animate();
+        }
+    }, 1000);
 }
 
 // Initialize the game
@@ -349,4 +359,295 @@ document.getElementById('track-choice').addEventListener('change', function() {
     track.material.needsUpdate = true;
 });
 
-// Add more event listeners for other UI controls
+document.getElementById('weather-choice').addEventListener('change', function() {
+    selectedWeather = this.value;
+    updateWeatherEffects();
+});
+
+document.getElementById('player-count').addEventListener('change', function() {
+    playerCount = parseInt(this.value);
+    resetCars();
+});
+
+document.getElementById('ai-opponents').addEventListener('change', function() {
+    aiOpponents = parseInt(this.value);
+    resetCars();
+});
+
+document.getElementById('lap-count').addEventListener('change', function() {
+    lapCount = parseInt(this.value);
+});
+
+document.getElementById('car-pattern').addEventListener('change', function() {
+    carPattern = this.value;
+    updateCarAppearance();
+});
+
+document.getElementById('car-decals').addEventListener('change', function() {
+    carDecal = this.value;
+    updateCarAppearance();
+});
+
+document.getElementById('car-rims').addEventListener('change', function() {
+    carRims = this.value;
+    updateCarAppearance();
+});
+
+// Update weather effects
+function updateWeatherEffects() {
+    switch (selectedWeather) {
+        case 'rainy':
+            addRainEffect();
+            break;
+        case 'foggy':
+            addFogEffect();
+            break;
+        case 'stormy':
+            addStormEffect();
+            break;
+        case 'aurora':
+            addAuroraEffect();
+            break;
+        default:
+            clearWeatherEffects();
+    }
+}
+
+// Add rain effect
+function addRainEffect() {
+    clearWeatherEffects();
+    const rainGeometry = new THREE.BufferGeometry();
+    const rainCount = 15000;
+    const rainPositions = new Float32Array(rainCount * 3);
+    
+    for (let i = 0; i < rainCount * 3; i += 3) {
+        rainPositions[i] = Math.random() * 400 - 200;
+        rainPositions[i + 1] = Math.random() * 500 - 250;
+        rainPositions[i + 2] = Math.random() * 400 - 200;
+    }
+    
+    rainGeometry.setAttribute('position', new THREE.BufferAttribute(rainPositions, 3));
+    const rainMaterial = new THREE.PointsMaterial({
+        color: 0xaaaaaa,
+        size: 0.1,
+        transparent: true
+    });
+    const rain = new THREE.Points(rainGeometry, rainMaterial);
+    scene.add(rain);
+    scene.userData.weatherEffect = rain;
+}
+
+// Add fog effect
+function addFogEffect() {
+    clearWeatherEffects();
+    const fog = new THREE.FogExp2(0xcccccc, 0.002);
+    scene.fog = fog;
+    scene.userData.weatherEffect = fog;
+}
+
+// Add storm effect
+function addStormEffect() {
+    clearWeatherEffects();
+    addRainEffect();
+    
+    const lightningMaterial = new THREE.MeshBasicMaterial({
+        color: 0xFFFFFF,
+        transparent: true,
+        opacity: 0
+    });
+    const lightningGeometry = new THREE.PlaneGeometry(100, 100);
+    const lightning = new THREE.Mesh(lightningGeometry, lightningMaterial);
+    lightning.position.set(0, 50, -50);
+    scene.add(lightning);
+    
+    scene.userData.weatherEffect = {
+        rain: scene.userData.weatherEffect,
+        lightning: lightning
+    };
+    
+    // Lightning flash effect
+    function flashLightning() {
+        lightning.material.opacity = 1;
+        setTimeout(() => {
+            lightning.material.opacity = 0;
+        }, 50);
+        
+        setTimeout(flashLightning, Math.random() * 10000 + 5000);
+    }
+    
+    flashLightning();
+}
+
+// Add aurora effect
+function addAuroraEffect() {
+    clearWeatherEffects();
+    const auroraGeometry = new THREE.BufferGeometry();
+    const auroraCount = 5000;
+    const auroraPositions = new Float32Array(auroraCount * 3);
+    const auroraColors = new Float32Array(auroraCount * 3);
+    
+    for (let i = 0; i < auroraCount * 3; i += 3) {
+        auroraPositions[i] = Math.random() * 400 - 200;
+        auroraPositions[i + 1] = Math.random() * 200 + 100;
+        auroraPositions[i + 2] = Math.random() * 400 - 200;
+        
+        auroraColors[i] = Math.random();
+        auroraColors[i + 1] = Math.random();
+        auroraColors[i + 2] = Math.random();
+    }
+    
+    auroraGeometry.setAttribute('position', new THREE.BufferAttribute(auroraPositions, 3));
+    auroraGeometry.setAttribute('color', new THREE.BufferAttribute(auroraColors, 3));
+    
+    const auroraMaterial = new THREE.PointsMaterial({
+        size: 0.5,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.5
+    });
+    
+    const aurora = new THREE.Points(auroraGeometry, auroraMaterial);
+    scene.add(aurora);
+    scene.userData.weatherEffect = aurora;
+}
+
+// Clear weather effects
+function clearWeatherEffects() {
+    if (scene.userData.weatherEffect) {
+        if (Array.isArray(scene.userData.weatherEffect)) {
+            scene.userData.weatherEffect.forEach(effect => scene.remove(effect));
+        } else {
+            scene.remove(scene.userData.weatherEffect);
+        }
+        scene.userData.weatherEffect = null;
+    }
+    scene.fog = null;
+}
+
+// Reset cars
+function resetCars() {
+    cars.forEach(car => scene.remove(car));
+    aiCars.forEach(car => scene.remove(car));
+    cars = [];
+    aiCars = [];
+    createCars();
+}
+
+// Update car appearance
+function updateCarAppearance() {
+    cars.forEach(car => {
+        // Update car pattern
+        switch (carPattern) {
+            case 'stripes':
+                addStripes(car);
+                break;
+            case 'dots':
+                addDots(car);
+                break;
+            case 'camo':
+                addCamo(car);
+                break;
+            default:
+                car.material.map = null;
+        }
+        
+        // Update car decals
+        removeDecals(car);
+        switch (carDecal) {
+            case 'flame':
+                addFlameDecal(car);
+                break;
+            case 'skull':
+                addSkullDecal(car);
+                break;
+            case 'lightning':
+                addLightningDecal(car);
+                break;
+        }
+        
+        // Update car rims
+        updateRims(car);
+        
+        car.material.needsUpdate = true;
+    });
+}
+
+// Add stripes pattern
+function addStripes(car) {
+    const stripeTexture = new THREE.TextureLoader().load('textures/stripes.png');
+    car.material.map = stripeTexture;
+}
+
+// Add dots pattern
+function addDots(car) {
+    const dotTexture = new THREE.TextureLoader().load('textures/dots.png');
+    car.material.map = dotTexture;
+}
+
+// Add camo pattern
+function addCamo(car) {
+    const camoTexture = new THREE.TextureLoader().load('textures/camo.png');
+    car.material.map = camoTexture;
+}
+
+// Remove decals
+function removeDecals(car) {
+    car.children = car.children.filter(child => !(child instanceof THREE.Sprite));
+}
+
+// Add flame decal
+function addFlameDecal(car) {
+    const flameTexture = new THREE.TextureLoader().load('textures/flame_decal.png');
+    const flameMaterial = new THREE.SpriteMaterial({ map: flameTexture });
+    const flameSprite = new THREE.Sprite(flameMaterial);
+    flameSprite.scale.set(1, 0.5, 1);
+    flameSprite.position.set(0, 0.25, 0);
+    car.add(flameSprite);
+}
+
+// Add skull decal
+function addSkullDecal(car) {
+    const skullTexture = new THREE.TextureLoader().load('textures/skull_decal.png');
+    const skullMaterial = new THREE.SpriteMaterial({ map: skullTexture });
+    const skullSprite = new THREE.Sprite(skullMaterial);
+    skullSprite.scale.set(0.5, 0.5, 1);
+    skullSprite.position.set(0, 0.25, 0.9);
+    car.add(skullSprite);
+}
+
+// Add lightning decal
+function addLightningDecal(car) {
+    const lightningTexture = new THREE.TextureLoader().load('textures/lightning_decal.png');
+    const lightningMaterial = new THREE.SpriteMaterial({ map: lightningTexture });
+    const lightningSprite = new THREE.Sprite(lightningMaterial);
+    lightningSprite.scale.set(1, 0.5, 1);
+    lightningSprite.position.set(0, 0, 0.9);
+    car.add(lightningSprite);
+}
+
+// Update rims
+function updateRims(car) {
+    car.children.forEach(child => {
+        if (child instanceof THREE.Mesh && child.geometry instanceof THREE.CylinderGeometry) {
+            switch (carRims) {
+                case 'gold':
+                    child.material.color.setHex(0xFFD700);
+                    break;
+                case 'black':
+                    child.material.color.setHex(0x000000);
+                    break;
+                case 'neon':
+                    child.material.color.setHex(0x00FF00);
+                    child.material.emissive.setHex(0x00FF00);
+                    child.material.emissiveIntensity = 0.5;
+                    break;
+                default:
+                    child.material.color.setHex(0xC0C0C0);
+                    child.material.emissive.setHex(0x000000);
+            }
+        }
+    });
+}
+
+// Initialize the game
+init();

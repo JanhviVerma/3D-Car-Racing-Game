@@ -116,6 +116,18 @@ button:hover {
     font-size: 14px;
 }
 
+#countdown {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 72px;
+    font-weight: bold;
+    color: #00ff00;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    display: none;
+}
+
 @media (max-width: 768px) {
     #ui-panel {
         width: 100%;
