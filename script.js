@@ -42,10 +42,18 @@ let carSpeeds = {
 };
 
 let selectedCategory = 'sports';
+let lapCount = 3;
 
 document.getElementById('car-category').addEventListener('change', function() {
     selectedCategory = this.value;
 });
+
+document.getElementById('lap-count').addEventListener('change', function() {
+    lapCount = parseInt(this.value, 10);
+});
+
+let currentLap = 1;
+let isBoostActive = false;
 
 function animate() {
     requestAnimationFrame(animate);
@@ -64,13 +72,34 @@ function startRace() {
     let speeds = carSpeeds[selectedCategory];
 
     let raceInterval = setInterval(() => {
+        if (Math.random() < 0.05 && !isBoostActive) {
+            speeds.car1 *= 2;
+            speeds.car2 *= 2;
+            isBoostActive = true;
+            setTimeout(() => {
+                speeds.car1 /= 2;
+                speeds.car2 /= 2;
+                isBoostActive = false;
+            }, 2000);
+        }
+
         car1Position += Math.random() * speeds.car1;
         car2Position += Math.random() * speeds.car2;
 
         car1.position.z = -car1Position;
         car2.position.z = -car2Position;
 
-        if (car1Position >= 50 || car2Position >= 50) {
+        if (Math.abs(car1.position.x - car2.position.x) < 0.1 && Math.abs(car1.position.z - car2.position.z) < 0.1) {
+            car1Position -= 0.5; // Simple collision effect
+            car2Position -= 0.5;
+        }
+
+        if (car1Position >= track.geometry.parameters.depth * currentLap) {
+            currentLap++;
+            document.getElementById('lap-display').textContent = `Lap: ${currentLap}`;
+        }
+
+        if (currentLap > lapCount) {
             clearInterval(raceInterval);
             declareWinner(car1Position, car2Position);
         }

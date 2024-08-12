@@ -17,8 +17,11 @@
                 <option value="suv">SUV</option>
                 <option value="truck">Truck</option>
             </select>
+            <label for="lap-count">Number of Laps:</label>
+            <input type="number" id="lap-count" value="3" min="1" max="10">
             <button id="start-button">Start Race</button>
         </div>
+        <div id="lap-display">Lap: 1</div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="script.js"></script>
