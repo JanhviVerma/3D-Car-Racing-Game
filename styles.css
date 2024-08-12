@@ -40,7 +40,7 @@ body {
     margin: 5px 0;
 }
 
-#car-category, #car-color, #car-pattern, #track-choice, #weather-choice, #lap-count, #ai-opponents {
+#car-category, #car-color, #car-pattern, #car-decals, #car-rims, #track-choice, #weather-choice, #lap-count, #ai-opponents, #player-count {
     padding: 5px;
     font-size: 16px;
 }
