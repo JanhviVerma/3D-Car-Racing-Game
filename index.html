@@ -17,11 +17,28 @@
                 <option value="suv">SUV</option>
                 <option value="truck">Truck</option>
             </select>
+
+            <label for="track-choice">Choose Track:</label>
+            <select id="track-choice">
+                <option value="desert">Desert Track</option>
+                <option value="forest">Forest Track</option>
+                <option value="city">City Track</option>
+            </select>
+
+            <label for="weather-choice">Weather:</label>
+            <select id="weather-choice">
+                <option value="sunny">Sunny</option>
+                <option value="rainy">Rainy</option>
+                <option value="foggy">Foggy</option>
+            </select>
+
             <label for="lap-count">Number of Laps:</label>
             <input type="number" id="lap-count" value="3" min="1" max="10">
             <button id="start-button">Start Race</button>
         </div>
         <div id="lap-display">Lap: 1</div>
+        <div id="timer-display">Lap Time: 00:00</div>
+        <div id="power-up-display">Power-Up: None</div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="script.js"></script>
