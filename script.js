@@ -35,8 +35,22 @@ scene.add(directionalLight);
 // Camera position
 camera.position.z = 50;
 
+let carSpeeds = {
+    sports: { car1: 0.15, car2: 0.14 },
+    suv: { car1: 0.1, car2: 0.09 },
+    truck: { car1: 0.08, car2: 0.07 }
+};
+
+let selectedCategory = 'sports';
+
+document.getElementById('car-category').addEventListener('change', function() {
+    selectedCategory = this.value;
+});
+
 function animate() {
     requestAnimationFrame(animate);
+    camera.position.z = car1.position.z + 15;
+    camera.lookAt(car1.position);
     renderer.render(scene, camera);
 }
 
@@ -47,10 +61,11 @@ document.getElementById('start-button').addEventListener('click', startRace);
 function startRace() {
     let car1Position = 0;
     let car2Position = 0;
+    let speeds = carSpeeds[selectedCategory];
 
     let raceInterval = setInterval(() => {
-        car1Position += Math.random() * 0.1;
-        car2Position += Math.random() * 0.1;
+        car1Position += Math.random() * speeds.car1;
+        car2Position += Math.random() * speeds.car2;
 
         car1.position.z = -car1Position;
         car2.position.z = -car2Position;

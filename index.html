@@ -10,7 +10,15 @@
     <div class="game-container">
         <h1>3D Car Racing Game</h1>
         <div id="game"></div>
-        <button id="start-button">Start Race</button>
+        <div class="controls">
+            <label for="car-category">Choose Car Category:</label>
+            <select id="car-category">
+                <option value="sports">Sports Car</option>
+                <option value="suv">SUV</option>
+                <option value="truck">Truck</option>
+            </select>
+            <button id="start-button">Start Race</button>
+        </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="script.js"></script>
