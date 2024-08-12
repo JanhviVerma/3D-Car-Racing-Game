@@ -8,71 +8,72 @@
 </head>
 <body>
     <div id="game-container">
-        <div id="ui">
+        <canvas id="game-canvas"></canvas>
+        <div id="ui-panel">
             <h1>3D Car Racing Game</h1>
-            <label for="car-category">Car Category:</label>
-            <select id="car-category">
-                <option value="sports">Sports</option>
-                <option value="classic">Classic</option>
-                <option value="muscle">Muscle</option>
-            </select>
-            <label for="car-color">Car Color:</label>
-            <input type="color" id="car-color" value="#ff0000">
-            <label for="car-pattern">Car Pattern:</label>
-            <select id="car-pattern">
-                <option value="stripes">Stripes</option>
-                <option value="polka-dots">Polka Dots</option>
-                <option value="solid">Solid</option>
-                <option value="camouflage">Camouflage</option>
-                <option value="checkered">Checkered</option>
-            </select>
-            <label for="car-decals">Car Decals:</label>
-            <select id="car-decals">
-                <option value="none">None</option>
-                <option value="flames">Flames</option>
-                <option value="stars">Stars</option>
-                <option value="checkered">Checkered</option>
-                <option value="stripes">Stripes</option>
-            </select>
-            <label for="car-rims">Car Rims:</label>
-            <select id="car-rims">
-                <option value="silver">Silver</option>
-                <option value="black">Black</option>
-                <option value="gold">Gold</option>
-                <option value="chrome">Chrome</option>
-                <option value="custom">Custom</option>
-            </select>
-            <label for="track-choice">Track:</label>
-            <select id="track-choice">
-                <option value="city">City</option>
-                <option value="desert">Desert</option>
-                <option value="forest">Forest</option>
-                <option value="snow">Snow</option>
-            </select>
-            <label for="weather-choice">Weather:</label>
-            <select id="weather-choice">
-                <option value="sunny">Sunny</option>
-                <option value="rainy">Rainy</option>
-                <option value="foggy">Foggy</option>
-                <option value="snowy">Snowy</option>
-                <option value="stormy">Stormy</option>
-            </select>
-            <label for="lap-count">Lap Count:</label>
-            <input type="number" id="lap-count" min="1" value="3">
-            <label for="ai-opponents">AI Opponents:</label>
-            <input type="number" id="ai-opponents" min="0" value="3">
-            <label for="player-count">Player Count:</label>
-            <input type="number" id="player-count" min="1" value="1">
-            <button id="start-button">Start Race</button>
-            <button id="reset-button">Reset Game</button>
-            <div id="lap-display">Lap: 1</div>
-            <div id="timer-display">Lap Time: 00:00</div>
-            <div id="power-up-display">Power-Up: None</div>
-            <div id="car-stats">Car Stats: Speed: 1.0</div>
-            <ul id="leaderboard-list"></ul>
+            <div id="settings">
+                <label for="car-category">Car Category:</label>
+                <select id="car-category">
+                    <option value="sports">Sports</option>
+                    <option value="classic">Classic</option>
+                    <option value="muscle">Muscle</option>
+                </select>
+                <label for="car-color">Car Color:</label>
+                <input type="color" id="car-color" value="#FF0000">
+                <label for="car-pattern">Car Pattern:</label>
+                <select id="car-pattern">
+                    <option value="solid">Solid</option>
+                    <option value="stripes">Stripes</option>
+                    <option value="dots">Dots</option>
+                </select>
+                <label for="car-decals">Car Decals:</label>
+                <select id="car-decals">
+                    <option value="none">None</option>
+                    <option value="flame">Flame</option>
+                    <option value="skull">Skull</option>
+                </select>
+                <label for="car-rims">Car Rims:</label>
+                <select id="car-rims">
+                    <option value="silver">Silver</option>
+                    <option value="gold">Gold</option>
+                    <option value="black">Black</option>
+                </select>
+                <label for="track-choice">Track:</label>
+                <select id="track-choice">
+                    <option value="city">City</option>
+                    <option value="desert">Desert</option>
+                    <option value="forest">Forest</option>
+                    <option value="snow">Snow</option>
+                </select>
+                <label for="weather-choice">Weather:</label>
+                <select id="weather-choice">
+                    <option value="sunny">Sunny</option>
+                    <option value="rainy">Rainy</option>
+                    <option value="foggy">Foggy</option>
+                    <option value="stormy">Stormy</option>
+                </select>
+                <label for="player-count">Players:</label>
+                <input type="number" id="player-count" min="1" max="10" value="1">
+                <label for="ai-opponents">AI Opponents:</label>
+                <input type="number" id="ai-opponents" min="0" max="10" value="3">
+                <label for="lap-count">Laps:</label>
+                <input type="number" id="lap-count" min="1" max="10" value="3">
+                <button id="start-button">Start Race</button>
+                <button id="reset-button">Reset Game</button>
+            </div>
+            <div id="game-info">
+                <div id="lap-display">Lap: 1</div>
+                <div id="timer-display">Lap Time: 00:00</div>
+                <div id="power-up-display">Power-Up: None</div>
+                <div id="car-stats">Car Stats: Speed: 1.0</div>
+            </div>
+            <div id="leaderboard">
+                <h2>Leaderboard</h2>
+                <ul id="leaderboard-list"></ul>
+            </div>
         </div>
-        <div id="game-canvas"></div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
