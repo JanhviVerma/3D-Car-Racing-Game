@@ -18,6 +18,16 @@
                 <option value="truck">Truck</option>
             </select>
 
+            <label for="car-color">Choose Car Color:</label>
+            <input type="color" id="car-color" value="#ff0000">
+
+            <label for="car-pattern">Choose Car Pattern:</label>
+            <select id="car-pattern">
+                <option value="stripes">Stripes</option>
+                <option value="polka-dots">Polka Dots</option>
+                <option value="solid">Solid</option>
+            </select>
+
             <label for="track-choice">Choose Track:</label>
             <select id="track-choice">
                 <option value="desert">Desert Track</option>
@@ -30,15 +40,24 @@
                 <option value="sunny">Sunny</option>
                 <option value="rainy">Rainy</option>
                 <option value="foggy">Foggy</option>
+                <option value="snowy">Snowy</option>
             </select>
 
             <label for="lap-count">Number of Laps:</label>
             <input type="number" id="lap-count" value="3" min="1" max="10">
             <button id="start-button">Start Race</button>
+            <button id="reset-button">Reset Game</button>
         </div>
         <div id="lap-display">Lap: 1</div>
         <div id="timer-display">Lap Time: 00:00</div>
         <div id="power-up-display">Power-Up: None</div>
+        <div id="car-stats">Car Stats: Speed: 1.0</div>
+        <div id="leaderboard">
+            <h2>Leaderboard</h2>
+            <ul id="leaderboard-list">
+                <!-- Leaderboard entries will be dynamically inserted here -->
+            </ul>
+        </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="script.js"></script>
