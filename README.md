@@ -4,6 +4,8 @@
 
 The **3D Car Racing Game** is an immersive web-based game that allows players to experience the thrill of racing in a 3D environment. This game features dynamic gameplay with realistic physics, challenging tracks, and smooth controls. It's designed to be engaging and accessible on various devices, providing a fun experience for players of all ages.
 
+**[Play the Game Live!](https://janhviverma.github.io/3D-Car-Racing-Game/)**
+
 ## Features
 
 - **3D Graphics:** Enjoy a visually appealing 3D racing experience right in your browser.
